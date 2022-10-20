@@ -12,13 +12,15 @@
 	<hr>
 	<table width="600" border="1" cellpadding="0" cellspacing="0">
 	<form action="modify.do">
+		<input type="hidden" name="bid" value="${content.bid }">  //히튼이라서 값은 보이지 않음
+		
 		<tr>
 			<td align="center" bgcolor="#D4F4FA">제목</td>
-			<td><input type="text" value="${content.btitle }" size="80"></td>
+			<td><input type="text" value="${content.btitle }" size="80" name="btitle"></td>
 		</tr>
 		<tr>
 			<td align="center" bgcolor="#D4F4FA">글쓴이</td>
-			<td><input type="text" value="${content.bname }" size="80"></td>
+			<td><input type="text" value="${content.bname }" size="80" name="bname"></td>
 		</tr>
 		<tr>
 			<td align="center" bgcolor="#D4F4FA">등록일</td>
@@ -31,7 +33,7 @@
 		<tr height="200">
 			<td valign="top" bgcolor="#D4F4FA">내용</td>
 			<td valign="top">
-				<textarea rows="10" cols="60">${content.bcontent }</textarea>
+				<textarea rows="12" cols="60" name="bcontent">${content.bcontent }</textarea>
 			</td>
 		</tr>
 		<tr>

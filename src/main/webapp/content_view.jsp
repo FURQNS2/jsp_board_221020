@@ -33,9 +33,9 @@
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<input type="button" value="글수정" onclick="javascript:window.loction='modify.do?bid=${content.bid}'">
-				<input type="button" value="글삭제">
-				<input type="button" value="글목록" onclick="javascript:window.loction='list.do'">
+				<input type="button" value="글수정" onclick="javascript:window.location='content_modify.do?bid=${content.bid}'">
+				<input type="button" value="글삭제" onclick="javascript:window.location='delete.do?bid=${content.bid}'">
+				<input type="button" value="글목록" onclick="javascript:window.location='list.do'">
 			</td>
 		</tr>
 	</table>

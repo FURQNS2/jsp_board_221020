@@ -16,13 +16,13 @@ public class BoardDao {
 	static String user = "root";    // 관리자 계정
 	static String pass = "12345";    // MySql 비밀번호
 	
-	public void write (String bname, String btitle, String bcontente) {
+	public void write (String bname, String btitle, String bcontent) {
 	
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 	
-		String sql="INSERT INTO freeboard(bname, btitle, bcontent, bhit);"
-				+ "VALUES ('"+bname+"', '"+btitle+"', '"+bcontente+"', 0)";
+		String sql="INSERT INTO freeboard(bname, btitle, bcontent, bhit)"
+				+ "VALUES ('"+bname+"', '"+btitle+"', '"+bcontent+"', 0)";
 		
 		try {
 			Class.forName(driverName);
@@ -109,7 +109,9 @@ public class BoardDao {
 	
 	public BoardDto content_view(String boardNum) { //특정번호 글내용가져오기
 
-		String sql="SELECT * FROM freeboard WHERE bid =?;";
+		upHit(boardNum);
+		
+		String sql="SELECT * FROM freeboard WHERE bid =?";
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -127,7 +129,7 @@ public class BoardDao {
 			if (rs.next()) {
 				int bid = rs.getInt("bid");
 				String bname = rs.getString("bname");
-				String btitle = rs.getString("btitel");
+				String btitle = rs.getString("btitle");
 				String bcontent = rs.getString("bcontent");
 				String bdate = rs.getString("bdate");
 				int bhit = rs.getInt("bhit");
@@ -161,5 +163,113 @@ public class BoardDao {
 	
 	public void modify(String bname, String btitle, String bcontent, String bid) {//특정 번호글의 내용 수정하기
 	
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+	
+		String sql="UPDATE freeboard SET bname=?, btitle=?, bcontent=? WHERE bid=? ";
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, user, pass);
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, bname);
+			pstmt.setString(2, btitle);
+			pstmt.setString(3, bcontent);
+			pstmt.setString(4, bid);
+			
+			pstmt.executeUpdate(); // sql 실행	
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+			if(pstmt != null ) {
+				pstmt.close();
+			} 
+			if(conn != null) {
+				conn.close();
+			}
+			
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+	
+	
+	public void delete(String boardNum) {//특정 번호 삭제하기
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+	
+		String sql="DELETE FROM freeboard WHERE bid=?";
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, user, pass);
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, boardNum);
+			
+			pstmt.executeUpdate();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null ) {
+					pstmt.close();
+				} 
+				if(conn != null) {
+					conn.close();
+				}
+			
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void upHit(String bid) { //조회수 1씩 증가
+		
+		String sql="UPDATE freeboard SET bhit=bhit+1 WHERE bid=?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, user, pass);
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, bid);
+			
+			pstmt.executeUpdate(); // sql 실행	
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+			if(pstmt != null ) {
+				pstmt.close();
+			} 
+			if(conn != null) {
+				conn.close();
+			}
+			
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
